@@ -7,6 +7,7 @@ import EventHost from '@/pages/event/EventHost.vue';
 import EventDetail from '@/pages/event/EventDetail.vue';
 import Info from '@/pages/member/Info.vue';
 import EventWinnerPick from '@/pages/event/EvenWinnerPick.vue'
+
 const router = createRouter({
     history: createWebHistory(),
     routes: [

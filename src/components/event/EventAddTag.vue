@@ -30,11 +30,11 @@
     import {ref} from 'vue'
     const emit = defineEmits(["modal-check", "modal-confirm"])
     const tagName = defineModel()
-    
+
     const tagList = ref([])
     function addTag()
     {
-        console.log(tagName.value)
+        if(!tagName.value) return
         tagList.value.push(tagName.value)
         tagName.value = ""
     }
@@ -53,7 +53,7 @@
   height: 100%;
   background: rgba(0, 0, 0, 0.4);
 }
-/* modal or popup */
+
 .modal-container {
   position: relative;
   top: 50%;

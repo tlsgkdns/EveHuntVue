@@ -12,9 +12,13 @@
         </li>
       </ul>
     </div>
-    <div class="d-flex justify-content-end">
-        <button type="button" class="btn btn-primary me-2 border">LogIn</button>
+    <div class="d-flex justify-content-end" v-if="false">
+        <button type="button" class="btn btn-primary me-2 border">Info</button>
         <button type="button" class="btn btn-primary border">Logout</button>
+    </div>
+    <div class="d-flex justify-content-end" v-else>
+      <button type="button" class="btn btn-primary me-2 border">LogIn</button>
+      <button type="button" class="btn btn-primary border">Register</button>
     </div>
   </div>
 </nav>
@@ -41,6 +45,6 @@
 }
 </style>
 
-<script>
-
+<script setup>
+  import {getLoginMember} from '@/member'
 </script>

@@ -8,11 +8,11 @@
         <div class="card-body">
             <div class="input-group mb-3">
                     <span class="input-group-text">ID</span>
-                    <input type="text" name="username" class="form-control" placeholder="USER ID" >
+                    <input type="text" name="username" class="form-control" placeholder="USER ID" v-model="email">
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text">PASSWORD</span>
-                    <input type="password" name="password" class="form-control" placeholder="PASSWORD">
+                    <input type="password" name="password" class="form-control" placeholder="PASSWORD" v-model="password">
                 </div>
                 <div class="input-group mb-3">
                     <input class="form-check-input" type="checkbox" name="remember-me">
@@ -22,13 +22,28 @@
                 </div>
                 <div class="my-4">
                     <div class="float-end">
-                        <button type="button" class="btn btn-primary submitBtn">LOGIN</button>
+                        <button type="button" class="btn btn-primary submitBtn" @click="loginAndRouting()">LOGIN</button>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-secondary">Register</button>
+                <button type="submit" class="btn btn-secondary" to="/member/register">Register</button>
 
         </div>
     </div>
 </div>
     </div>
 </template>
+
+<script setup>
+    import { login } from '@/member';
+    import { useRouter } from 'vue-router';
+
+    const email = defineModel('email')
+    const password = defineModel('password')
+    const router = useRouter()
+
+    function loginAndRouting()
+    {
+        login(email.value, password.value)
+        router.push({path: 'home'})
+    }
+</script>

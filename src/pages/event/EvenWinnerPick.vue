@@ -15,7 +15,6 @@
                                     <button class="btn btn-outline-secondary searchBtn" type="button">Search</button>
                                 </div>
                             </div>
-
                         </div>
                         <div class="row w-100">
                             <div class="col">

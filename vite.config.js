@@ -15,10 +15,5 @@ export default defineConfig({
   },
   build: {
     outDir: "../EveHunt/src/main/resources/static",
-  },
-  server: {
-    proxy: {
-      "/api": "http://localhost:8080"
-    }
   }
 })
