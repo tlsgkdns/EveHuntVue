@@ -2,18 +2,25 @@
     <div class="tagMenu">
         <h1>인기 태그</h1>
         <ul class="list-group tagMenuList">
-            <h5 v-for="tag in tagList" class="list-group-item tagItem">
-                {{tag.id}}. {{tag.tag}}
+            <h5 v-for="(tag, rank) in tagList" class="list-group-item tagItem">
+                {{rank + 1}}. {{tag.tagName}}
             </h5>
         </ul>
     </div>
 </template>
 
 <script setup>
-import { inject } from 'vue';
 
-const tagList = inject('tagList')
+import { ref } from 'vue';
+import { getPopularTagList } from '@/tag';
+const tagList = ref([])
 
+getPopularTagList().then(
+    (response) => {
+        console.log(response)
+        tagList.value = response
+    }
+)
 </script>
 
 <style>

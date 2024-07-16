@@ -24,6 +24,5 @@ import PopularTagList from '@/components/PopularTagList.vue'
 }
 .eventListScreen {
   display: float;
-  position: relative;
 }
 </style>

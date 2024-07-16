@@ -1,14 +1,18 @@
 <template>
-    <div class="container py-5 mx-auto">
+    <div class="container py-5 mx-auto" v-if="responseDto">
         <ul class="pagination flex-wrap">
-            <li class="page-item" v-if="responseDTO.prev">
-                <router-link class="page-link" :to="`${currentRoute}?page=${responseDTO.start - 1}&size=${responseDTO.size}`">Previous</router-link>
+            <li class="page-item" v-if="responseDto.prev">
+                <router-link class="page-link" :to="getURL(responseDto.start - 1, responseDto.size, responseDto.keyword, 
+                responseDto.searchType, responseDto.sortType, responseDto.asc)">Previous</router-link>
             </li>
-            <li :class="[i - 1 + responseDTO.start == page ? 'page-item active' : 'page-item']" v-for="i in ((responseDTO.end - responseDTO.start + 1 > 10) ? 10 : responseDTO.end - responseDTO.start + 1)">
-                <router-link class="page-link" :to="`${currentRoute}?page=${responseDTO.start + i - 1}&size=${responseDTO.size}`">{{i - 1 + responseDTO.start}}</router-link>
+            <li :class="[i - 1 + responseDto.start == page ? 'page-item active' : 'page-item']" 
+                    v-for="i in ((responseDto.end - responseDto.start + 1 > 10) ? 10 : responseDto.end - responseDto.start + 1)">
+                <router-link class="page-link" :to="getURL(responseDto.start + i - 1, responseDto.size, responseDto.keyword, 
+                responseDto.searchType, responseDto.sortType, responseDto.asc)">{{i - 1 + responseDto.start}}</router-link>
             </li>
-            <li class="page-item" v-if="responseDTO.next">
-                <router-link class="page-link" :to="`${currentRoute}?page=${responseDTO.end + 1}&size=${responseDTO.size}`">Next</router-link>
+            <li class="page-item" v-if="responseDto.next">
+                <router-link class="page-link" :to="getURL(responseDto.end + 1, responseDto.size, responseDto.keyword, 
+                responseDto.searchType, responseDto.sortType, responseDto.asc)">{{i - 1 + responseDto.start}}`">Next</router-link>
             </li>
         </ul>
         <router-view :key="useRoute().fullPath"></router-view>
@@ -16,18 +20,32 @@
 </template>
 
 <script setup>
-import { useRoute } from 'vue-router'
+import { useRoute} from 'vue-router'
 
-const page = (useRoute().query.page) ? useRoute().query.page : 1
-const size = (useRoute().query.size) ? useRoute().query.size : 9
-const responseDTO = {
-    prev: false,
-    page: page,
-    size: size,
-    total: 99,
-    next: true,
-    end: 11,
-    start: 1
-}
 const currentRoute = useRoute().path
+const page = (useRoute().query.page) ? useRoute().query.page : 1;
+const props = defineProps({
+    responseDto: {
+        Type: Object,
+        required: true,
+        default: {
+             prev: false,
+        page: 1,
+        size: 9,
+        total: 99,
+        next: true,
+        end: 11,
+        start: 1
+        }
+    }
+})
+function getURL(page, size, keyword, searchType, sortType, asc)
+{
+    var base = `${currentRoute}?page=${page}&size=${size}`
+    if(keyword != null && keyword != "") base += `&keyword=${keyword}`
+    if(searchType != null && searchType != "") base += `&searchType=${searchType}`
+    if(sortType != null && searchType != "") base += `&sortType=${sortType}`
+    if(asc != null) base += `&asc=${asc}`
+    return base
+}
 </script>

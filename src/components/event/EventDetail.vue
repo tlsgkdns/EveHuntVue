@@ -7,28 +7,31 @@
                      <header class="mb-4">
                         <!-- Post title-->
                          <h1 class="fw-bolder mb-1">{{event.title}}</h1>
-                         <div class="text-muted fst-italic mb-2">개최자: {{event.hostName}}</div>
+                         <div class="text-muted fst-italic mb-2">개최자: {{hostName}}</div>
                         <!-- Post meta content-->
-                        <div class="text-muted fst-italic mb-2">개최 개시일: {{event.createdAt}}</div>
+                        <div class="text-muted fst-italic mb-2">개최 개시일: {{getDateString(event.createdAt)}}</div>
                         <!-- Post categories-->
-                        <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
-                        <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>
+                        <a class="badge bg-secondary text-decoration-none link-light" v-for="tag in event.eventTags.slice(0)" href="#!">
+                            {{tag.tagName}}
+                        </a>
                     </header>
                     <!-- Preview image figure-->
-                    <figure class="mb-4"><img class="img-fluid rounded" v-if="event.eventImage != null"alt="https://dummyimage.com/900x400/ced4da/6c757d.jpg" /></figure>
+                    <figure class="mb-4">
+                        <img class="img-fluid rounded" v-if="imageSrc" :src="imageSrc" />
+                    </figure>
                     <!-- Post content-->
                     <section class="mb-5">
-                        {{event.descrition}}
+                        {{event.description}}
                     </section>
                 </article>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-4">
                 <div class="card mb-4">
                     <div class="card-header">이벤트 참여 인원</div>
                         <div class="card-body">
                             <div class="input-group">
-                                <input class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
-                                <button class="btn btn-primary" id="button-search" type="button">Go!</button>
+                                <h3>참가 가능 인원: {{event.capacity}}</h3>
+                                <h3>현재 참여 인원: {{event.participantCount}} </h3>
                             </div>
                         </div>
                     </div>
@@ -38,16 +41,7 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <ul class="list-unstyled mb-0">
-                                        <li><a href="#!">Web Design</a></li>
-                                        <li><a href="#!">HTML</a></li>
-                                        <li><a href="#!">Freebies</a></li>
-                                    </ul>
-                                </div>
-                                <div class="col-sm-6">
-                                    <ul class="list-unstyled mb-0">
-                                        <li><a href="#!">JavaScript</a></li>
-                                        <li><a href="#!">CSS</a></li>
-                                        <li><a href="#!">Tutorials</a></li>
+                                        <li v-for="tag in event.eventTags"><a href="#!">{{tag.tagName}}</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -55,40 +49,107 @@
                     </div>
                     <div class="card mb-4">
                         <div class="card-header">이벤트 종료일</div>
-                        <div class="card-body">{{event.closedAt}}</div>
+                        <div class="card-body">{{getDateString(event.closedAt)}}</div>
                     </div>
                     <div class="card mb-4">
                         <div class="card-header">최근 업데이트일</div>
-                        <div class="card-body">{{event.updatedAt}}</div>
+                        <div class="card-body">{{getDateString(event.updatedAt)}}</div>
                     </div>
-                    <div class="card mb-4">
-                        <div class="card-header">이벤트에 참여하기</div>
-                        <div class="card-body">
-                            <button class="btn btn-primary" id="button-search" type="button">Go!</button>
+                    <div v-if="event.status == 'PROCEED'">
+                        <div v-if="event.hostId == loginId" class="card mb-4">
+                            <button class="btn btn-primary" type="button" @click="modalOpen">수정하기</button>
+                        </div>
+                        <div v-if="event.hostId == loginId" class="card mb-4">
+                            <button class="btn btn-primary" type="button" @click="modalOpen">이벤트 종료</button>
+                        </div>
+                        <div v-else class="card mb-4">
+                            <button class="btn btn-primary" type="button" @click="modalOpen">참여하기</button>
+                        </div>
+                    </div>
+                    <div v-if="event.status == 'CLOSED'">
+                        <div v-if="event.hostId == loginId" class="card mb-4">
+                            <button class="btn btn-primary" type="button" @click="modalOpen">당첨자 선택</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    <EventParticipateModal v-show="modalCheck" :question="event.question" @modal-close="modalOpen" @participate-event="participateEventAndRouting"/>
 </template>
 <script setup>
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { getEvent, getParticipateCount, participateEvent } from '@/event';
+import { ref } from 'vue';
+import { getLoginMember, getMember } from '@/member';
+import { getImageSrc } from '@/upload';
 
+import EventParticipateModal from './EventParticipateModal.vue';
 const eventId = useRoute().query.id;
-
-const event = {
+const hostName = ref("")
+const imageSrc = ref(null)
+const router = useRouter()
+const loginId = ref(0)
+function getDateString(date)
+{
+    return date.substring(0, 10) + " " + date.substring(11, 20)
+}
+const event = ref({
     title: "Hello Event",
     descrition: "안녕하세요 감사해요 잘있어요 다시 만나요",
     winMessage: "당신이 이겼습니다",
     question: "이것이 질문",
     createdAt: "2012-11-02 12:03",
     updatedAt: "2012-11-03 13:04",
-    closedAt: "2012-12-01",
+    closedAt: "",
     capacity: 200,
     hostName: "개발자",
     eventType: 0,
-    eventImage: null
+    eventImage: null,
+    eventTags: []
+})
+getEvent(eventId).then(
+    (response) => {
+        event.value = response
+        console.log(response)
+        getMember(response.hostId).then(
+            (member) => {
+                hostName.value = member.name
+            }
+        )
+        if(response.eventImage != null)
+        {
+            getImageSrc(response.eventImage).then(
+            (image) => {
+                imageSrc.value = image
+            }
+            )
+        }        
+    }
+)
+getLoginMember().then(
+    (response) => {
+        console.log(response)
+        loginId.value = response.memberId
+    }
+)
+const modalCheck = ref(false)
+
+function modalOpen()
+{
+    modalCheck.value = !modalCheck.value
 }
+
+function participateEventAndRouting(answer)
+{
+    participateEvent(eventId, answer).then(
+        (response) => {
+            alert("성공적으로 참여하였습니다!");
+            router.push('/home')
+        }
+    )
+}
+
+
 </script>
 
 <style>

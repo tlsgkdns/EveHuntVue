@@ -38,4 +38,10 @@ async function getMember(memberId)
     let response = await axios.get(url + "/" + memberId)
     return response.data
 }
-export {registerMember, login, getLoginMember, getMember}
+async function getParticipatedEvents(pageRequest)
+{
+    const response = await axios.get(url + "/events?page=" + pageRequest.page + "&size=" + pageRequest.size, loginConfig)
+    console.log(response)
+    return response.data
+}
+export {registerMember, login, getLoginMember, getMember, getParticipatedEvents}

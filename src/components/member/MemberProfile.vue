@@ -30,7 +30,6 @@ const imageSrc = ref(null)
 
 getMember(memberId).then( memberResponse => {
     member.value = memberResponse
-    console.log(member.value)
     getImageSrc(memberResponse.profileImageName).then( imageResponse => {
         imageSrc.value = imageResponse
     }

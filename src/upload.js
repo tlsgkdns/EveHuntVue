@@ -49,6 +49,7 @@ async function uploadImage(fileInput)
 
 async function getImageSrc(imageName)
 {
+    if(imageName == null) return
     const response = await axios.get(url + "/" + imageName, {responseType: "blob"})
     if(response.status === 200)
     {

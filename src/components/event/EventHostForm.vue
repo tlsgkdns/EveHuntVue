@@ -5,16 +5,16 @@
             <form>
                 <small style="color:red" id="titleInfo"></small>
                 <div class="input-group mb-4">
-                    <span class="input-group-text inputTitle">제목</span>
+                    <span class="input-group-text">제목</span>
                     <input type="text" class="form-control" id="title" placeholder="Title" v-model="title">
                 </div>
                 
                 <div class="input-group mb-4">
-                    <span class="input-group-text inputTitle">이벤트 설명</span>
+                    <span class="input-group-text">이벤트 설명</span>
                     <textarea id="explanation" class="form-control col-sm-5" rows="10" style="white-space: pre-wrap" v-model="description"></textarea>
                 </div>
                 <div class="input-group mb-4">
-                    <span class="input-group-text inputTitle">이벤트 이미지</span>
+                    <span class="input-group-text">이벤트 이미지</span>
                     <div class="float-end uploadHidden">
                         <button type="button" class="btn btn-primary uploadFileBtn" style="height: 50px;" @click="imageModalOpen">ADD Files</button>
                     </div>
@@ -74,14 +74,8 @@
     const winMessage = defineModel('winMessage')
     const closeDate = defineModel('closeDate')
     const question = defineModel('question')
-    const closeTime = ref(null)
     const router = useRouter()
 
-    function changeTime(endTime)
-    {
-        console.log(endTime)
-        this.closeTime.value = endTime
-    }
     function tagModalOpen()
     {
         tagModalCheck.value = !tagModalCheck.value
@@ -116,11 +110,15 @@
     }
     function hostEventAndRouting()
     {
-        hostEvent(title.value, description.value, capacity.value, toRaw(image.value), question.value, closeDate.value, closeTime.value)
+        const tagAddRequests = tagList.value.map((str) => {
+            return {"tagName": str}
+        })
+        console.log(tagAddRequests)
+        hostEvent(title.value, description.value, capacity.value, winMessage.value, toRaw(image.value), question.value, closeDate.value, tagAddRequests)
         .then(
             response => {
                 console.log(response)
-                router.push('/event/detail?'+response.id)
+                router.push('/event/detail?id='+response.id)
             }
         )
     }
