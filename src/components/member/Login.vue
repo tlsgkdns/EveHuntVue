@@ -6,9 +6,9 @@
             Login Page
         </div>
         <div class="card-body">
-            <div class="input-group mb-3">
-                    <span class="input-group-text">ID</span>
-                    <input type="text" name="username" class="form-control" placeholder="USER ID" v-model="email">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">EMAIL</span>
+                    <input type="text" name="username" class="form-control" placeholder="Email" v-model="email">
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text">PASSWORD</span>
@@ -26,7 +26,6 @@
                     </div>
                 </div>
                 <button type="submit" class="btn btn-secondary" to="/member/register">Register</button>
-
         </div>
     </div>
 </div>
@@ -43,7 +42,17 @@
 
     function loginAndRouting()
     {
-        login(email.value, password.value)
-        router.push({path: 'home'})
+        login(email.value, password.value).then(
+            reponse => {
+                router.push({path: '/home'})
+            }
+        ).catch(e => {
+            if(e.message)
+            {
+                email.value = ""
+                password.value = ""
+                alert("아이디와 비밀번호가 일치하지 않습니다.")
+            }
+        })
     }
 </script>

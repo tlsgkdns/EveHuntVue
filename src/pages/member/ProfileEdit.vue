@@ -1,9 +1,9 @@
 <template>
     <Header />
-    <EventEditForm />
+    <MemberEditProfile />
 </template>
 
 <script setup>
     import Header from '@/components/Header.vue';
-    import EventEditForm from '@/components/event/EventEditForm.vue';
+    import MemberEditProfile from '@/components/member/MemberEditProfile.vue'
 </script>

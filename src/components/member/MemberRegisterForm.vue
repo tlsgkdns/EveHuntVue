@@ -54,7 +54,7 @@
 </template>
 
 <script setup>
-    import { registerMember } from '@/member';
+    import { registerMember, login } from '@/member';
     import { useRouter } from 'vue-router'
     import UploadImageModal from '@/components/UploadImageModal.vue'
     import {ref, toRaw } from 'vue'
@@ -75,12 +75,21 @@
     
     function registerMemberAndRouting()
     {
-        console.log(email.value)
         registerMember(email.value, name.value, password.value, toRaw(image.value)).then(
             response => {
-                router.push({path: '/member/login'})
+                login(email.value, password.value).then(
+                    () => {
+                        alert("회원가입이 완료되었습니다.")
+                        router.push({path: '/home'})
+                    }
+                )
             }
-        )
+        ).catch(e => {
+            if(e.response)
+            {
+                alert(e.response.data.message)
+            }
+        })
     }
     function setImage(response)
     {

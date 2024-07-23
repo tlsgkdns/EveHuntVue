@@ -57,10 +57,10 @@
                     </div>
                     <div v-if="event.status == 'PROCEED'">
                         <div v-if="event.hostId == loginId" class="card mb-4">
-                            <button class="btn btn-primary" type="button" @click="modalOpen">수정하기</button>
+                            <button class="btn btn-primary" type="button" @click="editEvent">수정하기</button>
                         </div>
                         <div v-if="event.hostId == loginId" class="card mb-4">
-                            <button class="btn btn-primary" type="button" @click="modalOpen">이벤트 종료</button>
+                            <button class="btn btn-primary" type="button" @click="closeEventAndReload">이벤트 종료</button>
                         </div>
                         <div v-else class="card mb-4">
                             <button class="btn btn-primary" type="button" @click="modalOpen">참여하기</button>
@@ -68,7 +68,7 @@
                     </div>
                     <div v-if="event.status == 'CLOSED'">
                         <div v-if="event.hostId == loginId" class="card mb-4">
-                            <button class="btn btn-primary" type="button" @click="modalOpen">당첨자 선택</button>
+                            <button class="btn btn-primary" type="button" @click="pickWinner">당첨자 선택</button>
                         </div>
                     </div>
                 </div>
@@ -78,7 +78,7 @@
 </template>
 <script setup>
 import { useRoute, useRouter } from 'vue-router'
-import { getEvent, getParticipateCount, participateEvent } from '@/event';
+import { getEvent, participateEvent, closeEvent } from '@/event';
 import { ref } from 'vue';
 import { getLoginMember, getMember } from '@/member';
 import { getImageSrc } from '@/upload';
@@ -148,8 +148,21 @@ function participateEventAndRouting(answer)
         }
     )
 }
+function editEvent()
+{
+    router.push('/event/edit?id=' + eventId)
+}
 
-
+function pickWinner()
+{
+    router.push('/event/pick-winner?id=' + eventId)
+}
+function closeEventAndReload()
+     {
+        closeEvent(eventId).then(
+            location.reload()
+        )
+     }
 </script>
 
 <style>

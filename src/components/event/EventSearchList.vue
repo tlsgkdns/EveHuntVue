@@ -25,6 +25,7 @@ const keyword = (useRoute().query.keyword) ? useRoute().query.keyword : null
 const sortType = (useRoute().query.sortType) ? useRoute().query.sortType : null
 const searchType = (useRoute().query.searchType) ? useRoute().query.searchType : null
 const asc = (useRoute().query.searchType) ? useRoute().query.asc : true
+
 searchEvent({"page": page, "size": size, "keyword": keyword, "sortType": sortType, "searchType": searchType, "asc": asc}).then(
     (response) => {
         eventList.value = response.dtoList

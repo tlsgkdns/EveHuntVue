@@ -7,18 +7,26 @@ import EventHost from '@/pages/event/EventHost.vue';
 import EventDetail from '@/pages/event/EventDetail.vue';
 import Info from '@/pages/member/Info.vue';
 import EventWinnerPick from '@/pages/event/EvenWinnerPick.vue'
+import PasswordEdit from '@/pages/member/PasswordEdit.vue'
+import ProfileEdit from '@/pages/member/ProfileEdit.vue'
+import EventEdit from '@/pages/event/EventEdit.vue';
+import NotFound from '@/pages/NotFound.vue'
 
 const router = createRouter({
     history: createWebHistory(),
     routes: [
-        {path: '/', name: 'home', component: Home},
-        {path: '/event/list', name: 'list', component: EventList},
+        {path: '/', name: 'home', component: Home, alias: ['/home']},
+        {path: '/event/list', name: 'list', component: EventList, props: true},
         {path: '/member/login', name: 'login', component: Login},
         {path: '/member/register', name: 'register', component: Register},
         {path: '/member/info', name: 'info', component: Info},
         {path: '/event/host', name: 'host', component: EventHost},
         {path: '/event/detail', name: "detail", component: EventDetail},
-        {path: '/event/pick-winner', name: "pick-winner", component: EventWinnerPick}
+        {path: '/event/pick-winner', name: "pick-winner", component: EventWinnerPick},
+        {path: '/member/edit/password', name: 'edit-member-password', component: PasswordEdit},
+        {path: '/member/edit/profile', name: 'edit-member-profile', component: ProfileEdit},
+        {path: '/event/edit', name: 'event-edit', component: EventEdit},
+        {path: '/:NotFound(.*)', component: NotFound}
     ]
 })
 

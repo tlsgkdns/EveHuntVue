@@ -1,9 +1,9 @@
 <template>
     <Header />
-    <EventEditForm />
+    <MemberEditPassword />
 </template>
 
 <script setup>
     import Header from '@/components/Header.vue';
-    import EventEditForm from '@/components/event/EventEditForm.vue';
+    import MemberEditPassword from '@/components/member/MemberEditPassword.vue'
 </script>

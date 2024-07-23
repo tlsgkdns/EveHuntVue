@@ -27,11 +27,19 @@
 </template>
 
 <script setup>
-    import {ref} from 'vue'
+    import {ref, watch} from 'vue'
     const emit = defineEmits(["modal-check", "modal-confirm"])
     const tagName = defineModel()
-
+    const props = defineProps({
+        initTagList: {
+            type: Array,
+            required: false
+        }
+    })
     const tagList = ref([])
+    watch(() => props.initTagList, (nv, ov) => {
+        tagList.value = props.initTagList
+    })
     function addTag()
     {
         if(!tagName.value) return

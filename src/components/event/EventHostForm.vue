@@ -1,7 +1,7 @@
 <template>
    <div class="card justify-content-center" style="margin: auto">
         <div class="card-header" style="font-size: 30px;">이벤트 개최</div>
-        <div class="card-body ">
+        <div class="card-body">
             <form>
                 <small style="color:red" id="titleInfo"></small>
                 <div class="input-group mb-4">
@@ -63,6 +63,8 @@
     import { getImageSrc } from '@/upload';
     import { hostEvent } from '@/event';
     import { useRouter } from 'vue-router';
+    import { isLogin } from '@/member';
+
     const tagList = ref([])
     const tagModalCheck = ref(false)
     const imageModalCheck = ref(false)
@@ -78,6 +80,8 @@
 
     function tagModalOpen()
     {
+        if(imageModalCheck.value) 
+            return
         tagModalCheck.value = !tagModalCheck.value
     }
     function tagModalConfirm(list)
@@ -88,6 +92,7 @@
     }
     function imageModalOpen()
     {
+        if(tagModalCheck.value) return
         imageModalCheck.value = !imageModalCheck.value
     }
     function getTagString()
@@ -120,8 +125,22 @@
                 console.log(response)
                 router.push('/event/detail?id='+response.id)
             }
-        )
+        ).catch(e => {
+            if(e.response)
+            {
+                alert(e.response.data.message)
+            }
+        })
     }
+    isLogin().then(
+        response => {
+            if(!response)
+            {
+                alert("로그인이 필요한 서비스입니다.")
+                router.push('/member/login')
+            }
+        }
+    )
 </script>
 <style>
     .inputTitle {

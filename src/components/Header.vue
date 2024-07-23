@@ -1,7 +1,7 @@
 <template>
     <nav class="navbar navbar-expand-lg bg-light">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#" style="font-size: 50px">EveHunt</a>
+    <router-link class="nav-link" to="/home"><a class="navbar-brand" href="#" style="font-size: 50px">EveHunt</a></router-link>
     <div class="collapse navbar-collapse d-flex">
       <ul class="navbar-nav menu">
         <li class="nav-item">
@@ -12,13 +12,16 @@
         </li>
       </ul>
     </div>
-    <div class="d-flex justify-content-end" v-if="false">
-        <button type="button" class="btn btn-primary me-2 border">Info</button>
-        <button type="button" class="btn btn-primary border">Logout</button>
+    <form>
+
+    </form>
+    <div class="d-flex justify-content-end" v-if="logined">
+        <button type="button" class="btn btn-primary me-2 border" @click="info">Info</button>
+        <button type="button" class="btn btn-primary border" @click="logOut">Logout</button>
     </div>
     <div class="d-flex justify-content-end" v-else>
-      <button type="button" class="btn btn-primary me-2 border">LogIn</button>
-      <button type="button" class="btn btn-primary border">Register</button>
+      <button type="button" class="btn btn-primary me-2 border" @click="login">LogIn</button>
+      <button type="button" class="btn btn-primary border" @click="register">Register</button>
     </div>
   </div>
 </nav>
@@ -46,5 +49,41 @@
 </style>
 
 <script setup>
-  import {getLoginMember} from '@/member'
+  import {memberLogout, isLogin, getLoginMember} from '@/member'
+  import {ref } from 'vue';
+  import { useRouter } from 'vue-router';
+  const memberId = ref(null)
+  const router = useRouter()
+  const logined = ref(false)
+  
+  isLogin().then(
+    (response) => {
+      console.log(response)
+      logined.value = response
+    }
+  )
+  getLoginMember().then(
+    (response) => {
+      memberId.value = response.memberId
+    }
+  )
+  function login()
+  {
+    router.push('/member/login')
+  }
+  function register()
+  {
+    router.push('/member/register')
+  }
+  function info()
+  {
+    router.push('/member/info?id=' + memberId.value)
+  }
+
+  function logOut()
+  {
+    memberLogout()
+    alert('정상적으로 로그아웃되었습니다.')
+    location.reload()
+  }
 </script>

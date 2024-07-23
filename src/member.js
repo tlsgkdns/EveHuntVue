@@ -26,6 +26,7 @@ async function login(email, password) {
         }
     )
     localStorage.setItem("Authorization", response.data.token)
+    return response.data
 }
 
 async function getLoginMember()
@@ -44,4 +45,34 @@ async function getParticipatedEvents(pageRequest)
     console.log(response)
     return response.data
 }
-export {registerMember, login, getLoginMember, getMember, getParticipatedEvents}
+
+async function editPassword(memberId, currentPassword, newPassword, passwordCheck)
+{
+    const response = await axios.patch(url + "/" + memberId + "/password", {
+        "currentPassword": currentPassword,
+        "newPassword": newPassword,
+        "passwordCheck": passwordCheck
+    }, loginConfig)
+    return response.data
+}
+
+async function editProfile(memberId, newName, newProfile)
+{
+    const response = await axios.patch(url + "/" + memberId + "/profile", {
+        "newName": newName,
+        "newProfileImage": newProfile
+    }, loginConfig)
+    return response.data
+}
+
+async function isLogin()
+{
+    const response = await axios.get(url + "/isLogin", loginConfig)
+    return response.data
+}
+
+function memberLogout()
+{
+    localStorage.removeItem("Authorization")
+}
+export {registerMember, login, getLoginMember, getMember, getParticipatedEvents, editPassword, editProfile, memberLogout, isLogin}

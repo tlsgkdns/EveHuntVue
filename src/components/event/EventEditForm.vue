@@ -45,14 +45,14 @@
                  </div>
                  <div class="my-4">
                      <div class="front-end">
-                         <button type="button" class="btn btn-primary submitBtn" @click="hostEventAndRouting">Submit</button>
+                         <button type="button" class="btn btn-primary submitBtn" @click="editEventAndRouting">Submit</button>
                      </div>
                  </div>
              </form>
          </div>
      </div>
-     <EventAddTag v-show="tagModalCheck" @modal-check="tagModalOpen" @modal-confirm="tagModalConfirm"></EventAddTag>
-     <UploadImageModal v-show="imageModalCheck" @modal-check="imageModalOpen" @set-image="setImage"></UploadImageModal>
+     <EventAddTag v-show="tagModalCheck" @modal-check="tagModalOpen" @modal-confirm="tagModalConfirm" :initTagList="tagList"></EventAddTag>
+     <UploadImageModal v-show="imageModalCheck" @modal-check="imageModalOpen" @set-image="setImage" ></UploadImageModal>
 
  </template>
  
@@ -61,8 +61,9 @@
      import EventAddTag from './EventAddTag.vue';
      import UploadImageModal from '@/components/UploadImageModal.vue'
      import { getImageSrc } from '@/upload';
-     import { hostEvent } from '@/event';
-     import { useRouter } from 'vue-router';
+     import { getEvent, editEvent, closeEvent } from '@/event';
+     import { useRoute, useRouter } from 'vue-router';
+     const eventId = useRoute().query.id
      const tagList = ref([])
      const tagModalCheck = ref(false)
      const imageModalCheck = ref(false)
@@ -75,7 +76,24 @@
      const closeDate = defineModel('closeDate')
      const question = defineModel('question')
      const router = useRouter()
- 
+     
+     getEvent(eventId).then(
+        (eventResponse) => {
+            image.value = eventResponse.eventImage
+            tagList.value = eventResponse.eventTags.map(function(element) {return element.tagName})
+            title.value = eventResponse.title
+            capacity.value = eventResponse.capacity
+            winMessage.value = eventResponse.winMessage,
+            closeDate.value = eventResponse.closedAt,
+            question.value = eventResponse.question,
+            description.value = eventResponse.description
+            getImageSrc(image.value).then(
+             response => {
+                 imageSrc.value = response
+             }
+            )
+        }
+     )
      function tagModalOpen()
      {
          tagModalCheck.value = !tagModalCheck.value
@@ -108,20 +126,21 @@
              }
          )
      }
-     function hostEventAndRouting()
+     function editEventAndRouting()
      {
          const tagAddRequests = tagList.value.map((str) => {
              return {"tagName": str}
          })
          console.log(tagAddRequests)
-         hostEvent(title.value, description.value, capacity.value, winMessage.value, toRaw(image.value), question.value, closeDate.value, tagAddRequests)
+         editEvent(eventId, title.value, description.value, capacity.value, winMessage.value, toRaw(image.value), question.value, closeDate.value, tagAddRequests)
          .then(
              response => {
                  console.log(response)
-                 router.push('/event/detail?id='+response.id)
+                 router.push('/event/detail?id='+eventId)
              }
          )
      }
+     
  </script>
  <style>
      .inputTitle {
