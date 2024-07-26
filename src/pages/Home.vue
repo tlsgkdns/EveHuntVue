@@ -14,7 +14,7 @@ import Header from '@/components/Header.vue'
 import Top5EventCardList from '@/components/event/Top5EventCardList.vue'
 import SearchEvent from '@/components/event/SearchEvent.vue'
 import PopularTagList from '@/components/PopularTagList.vue'
-import { getPopularEvent } from '@/event'
+import { getPopularEvent } from '@/js/event'
 import { ref } from 'vue'
 const eventList = ref([])
 getPopularEvent().then(
@@ -31,6 +31,6 @@ getPopularEvent().then(
   width: 1400px;
   height: 500px;
   position: relative;
-  left: 300px
+  left: 50px
 }
 </style>

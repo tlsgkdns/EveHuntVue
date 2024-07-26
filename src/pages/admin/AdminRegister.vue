@@ -1,10 +1,10 @@
 <template>
     <Header />
-    <RegisterForm :registerFunction="registerMember"/>
+    <RegisterForm :registerFunction="registerAdmin"/>
 </template>
 
 <script setup>
 import Header from '@/components/Header.vue';
 import RegisterForm from '@/components/member/MemberRegisterForm.vue'
-import { registerMember } from '@/js/member';
+import { registerAdmin } from '@/js/member';
 </script>

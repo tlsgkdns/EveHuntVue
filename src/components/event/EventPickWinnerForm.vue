@@ -64,7 +64,7 @@
   </template>
 
 <script setup>
-    import { getEvent, getParticpants, setEventResult} from '@/event';
+    import { getEvent, getParticpants, setEventResult} from '@/js/event';
     import { ref } from 'vue';
     import { useRoute, useRouter } from 'vue-router';
     import ParticipantEditWinMessageModal from './ParticipantEditWinMessageModal.vue';
@@ -115,7 +115,6 @@
         {
             targetId.value = id
             winMessage.value = winners.value.get(id)
-            console.log(winMessage.value)
         }
     }
     function editWinMessage(id, message)

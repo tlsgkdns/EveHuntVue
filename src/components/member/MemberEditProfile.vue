@@ -33,8 +33,8 @@
 
 <script setup>
     import { ref } from 'vue';
-    import { getLoginMember, editProfile } from '@/member';
-    import { getImageSrc } from '@/upload';
+    import { getLoginMember, editProfile } from '@/js/member';
+    import { getImageSrc } from '@/js/upload';
     import UploadImageModal from '@/components/UploadImageModal.vue'
     import { useRouter } from 'vue-router';
 

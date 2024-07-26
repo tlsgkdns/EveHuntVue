@@ -33,7 +33,7 @@
 </template>
 
 <script setup>
-    import { login } from '@/member';
+    import { login } from '@/js/member';
     import { useRouter } from 'vue-router';
 
     const email = defineModel('email')

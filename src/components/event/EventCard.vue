@@ -21,7 +21,7 @@
 </template>
 <script setup>
     import { ref } from 'vue';
-    import { getImageSrc } from '@/upload';
+    import { getImageSrc } from '@/js/upload';
     import { useRouter } from 'vue-router';
     const imageSrc = ref(null)
     const props = defineProps({

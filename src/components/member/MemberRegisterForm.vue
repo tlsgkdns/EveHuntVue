@@ -54,11 +54,11 @@
 </template>
 
 <script setup>
-    import { registerMember, login } from '@/member';
+    import { login } from '@/js/member';
     import { useRouter } from 'vue-router'
     import UploadImageModal from '@/components/UploadImageModal.vue'
     import {ref, toRaw } from 'vue'
-    import { getImageSrc } from '@/upload';
+    import { getImageSrc } from '@/js/upload';
 
     const email = defineModel('email')
     const password = defineModel('password')
@@ -67,6 +67,13 @@
     const modalCheck = ref(false)
     const image = ref(null)
     const imageSrc = ref(null)
+    const props = defineProps({
+        registerFunction: {
+           
+        }
+        }
+    )
+    console.log(props.registerFunction)
     function modalOpen()
     {
         modalCheck.value = !modalCheck.value
@@ -75,7 +82,7 @@
     
     function registerMemberAndRouting()
     {
-        registerMember(email.value, name.value, password.value, toRaw(image.value)).then(
+        props.registerFunction(email.value, name.value, password.value, toRaw(image.value)).then(
             response => {
                 login(email.value, password.value).then(
                     () => {

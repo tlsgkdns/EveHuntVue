@@ -60,10 +60,10 @@
     import { ref, toRaw } from 'vue';
     import EventAddTag from './EventAddTag.vue';
     import UploadImageModal from '@/components/UploadImageModal.vue'
-    import { getImageSrc } from '@/upload';
-    import { hostEvent } from '@/event';
+    import { getImageSrc } from '@/js/upload';
+    import { hostEvent } from '@/js/event';
     import { useRouter } from 'vue-router';
-    import { isLogin } from '@/member';
+    import { getLoginMember, isLogin } from '@/js/member';
 
     const tagList = ref([])
     const tagModalCheck = ref(false)
@@ -138,6 +138,18 @@
             {
                 alert("로그인이 필요한 서비스입니다.")
                 router.push('/member/login')
+            }
+            else
+            {
+                getLoginMember().then(
+                    member => {
+                        if(member.suspended)
+                        {
+                            alert("정지된 회원입니다.")
+                            router.push('/home')
+                        }
+                    }
+                )
             }
         }
     )

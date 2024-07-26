@@ -31,7 +31,7 @@
 
 <script setup>
 import {ref} from 'vue'
-import {getLoginMember, editPassword} from '@/member'
+import {getLoginMember, editPassword} from '@/js/member'
 import {useRouter} from 'vue-router'
 
 const currentPassword = ref("")

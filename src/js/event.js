@@ -1,5 +1,5 @@
 import axios from "axios"
-
+import { loginConfig } from "./member"
 const url = "http://localhost:8080/api/events"
 
 async function hostEvent(title, description, capacity, winMessage, eventImage, question, closeAt, tagAddRequests)
@@ -14,11 +14,7 @@ async function hostEvent(title, description, capacity, winMessage, eventImage, q
             "question": question,
             "closeAt": closeAt,
             "tagAddRequests": tagAddRequests
-        },
-        { headers: {
-            "Authorization": `Bearer ${localStorage.getItem("Authorization")}`
-            }
-        })
+        }, loginConfig)
     console.log(response)
     return response.data
 }
@@ -33,11 +29,7 @@ async function participateEvent(id, answer)
 {
     const response = await axios.post(url + "/" + id + "/participants", {
         "answer": answer
-    }, {
-        headers: {
-            "Authorization": `Bearer ${localStorage.getItem("Authorization")}`
-        }
-    }) 
+    }, loginConfig) 
     return response.data
 }
 
@@ -84,11 +76,7 @@ async function editEvent(eventId, title, description, capacity, winMessage, even
         "question": question,
         "closeAt": closeAt,
         "tagAddRequests": tagAddRequests
-    }, { 
-        headers: {
-        "Authorization": `Bearer ${localStorage.getItem("Authorization")}`
-        }
-    })
+    }, loginConfig)
     return response.data
 }
 

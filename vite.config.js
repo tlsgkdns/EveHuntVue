@@ -15,5 +15,8 @@ export default defineConfig({
   },
   build: {
     outDir: "../EveHunt/src/main/resources/static",
+    commonjsOptions: {
+      esmExternals: true 
+   }
   }
 })

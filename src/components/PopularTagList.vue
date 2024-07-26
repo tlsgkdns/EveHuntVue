@@ -12,7 +12,7 @@
 <script setup>
 
 import { ref } from 'vue';
-import { getPopularTagList } from '@/tag';
+import { getPopularTagList } from '@/js/tag';
 import { useRouter } from 'vue-router';
 const tagList = ref([])
 const router = useRouter()
@@ -25,7 +25,7 @@ getPopularTagList().then(
 
 function searchTag(tagName)
 {
-    router.push('/event/list?keyword=' + tagName + "&searchType=TAG")
+    router.push('/event/list?keyword=' + tagName + "&searchType=tag")
 }
 </script>
 

@@ -41,7 +41,7 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <ul class="list-unstyled mb-0">
-                                        <li v-for="tag in event.eventTags"><a href="#!">{{tag.tagName}}</a></li>
+                                        <li v-for="tag in event.eventTags"><a :href="'/event/list?keyword=' + tag.tagName + '&searchType=tag'">{{tag.tagName}}</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -56,15 +56,23 @@
                         <div class="card-body">{{getDateString(event.updatedAt)}}</div>
                     </div>
                     <div v-if="event.status == 'PROCEED'">
-                        <div v-if="event.hostId == loginId" class="card mb-4">
-                            <button class="btn btn-primary" type="button" @click="editEvent">수정하기</button>
+                        <div v-if="event.hostId == loginId">
+                            <div class="card mb-4">
+                                <button class="btn btn-primary" type="button" @click="editEvent">수정하기</button>
+                            </div>
+                            <div class="card mb-4">
+                                <button class="btn btn-primary" type="button" @click="closeEventAndReload">이벤트 종료</button>
+                            </div>
                         </div>
-                        <div v-if="event.hostId == loginId" class="card mb-4">
-                            <button class="btn btn-primary" type="button" @click="closeEventAndReload">이벤트 종료</button>
+                        <div v-else-if="loginId != null"> 
+                            <div class="card mb-4">
+                                <button class="btn btn-primary" type="button" @click="participateModalOpen">참여하기</button>
+                            </div>
+                            <div class="card mb-4">
+                                <button class="btn btn-primary" type="button" @click="reportModalOpen">신고하기</button>
+                            </div>
                         </div>
-                        <div v-else class="card mb-4">
-                            <button class="btn btn-primary" type="button" @click="modalOpen">참여하기</button>
-                        </div>
+                        
                     </div>
                     <div v-if="event.status == 'CLOSED'">
                         <div v-if="event.hostId == loginId" class="card mb-4">
@@ -74,21 +82,22 @@
                 </div>
             </div>
         </div>
-    <EventParticipateModal v-show="modalCheck" :question="event.question" @modal-close="modalOpen" @participate-event="participateEventAndRouting"/>
+    <EventParticipateModal v-show="participateModalCheck" :question="event.question" @modal-close="participateModalOpen" @participate-event="participateEventAndRouting"/>
+    <ReportModal v-show="reportModalCheck" @modal-close="reportModalOpen"></ReportModal>
 </template>
 <script setup>
 import { useRoute, useRouter } from 'vue-router'
-import { getEvent, participateEvent, closeEvent } from '@/event';
+import { getEvent, participateEvent, closeEvent } from '@/js/event';
 import { ref } from 'vue';
-import { getLoginMember, getMember } from '@/member';
-import { getImageSrc } from '@/upload';
-
+import { getLoginMember, getMember } from '@/js/member';
+import { getImageSrc } from '@/js/upload';
+import ReportModal from '../report/ReportModal.vue';
 import EventParticipateModal from './EventParticipateModal.vue';
 const eventId = useRoute().query.id;
 const hostName = ref("")
 const imageSrc = ref(null)
 const router = useRouter()
-const loginId = ref(0)
+const loginId = ref(null)
 function getDateString(date)
 {
     return date.substring(0, 10) + " " + date.substring(11, 20)
@@ -132,11 +141,15 @@ getLoginMember().then(
         loginId.value = response.memberId
     }
 )
-const modalCheck = ref(false)
-
-function modalOpen()
+const participateModalCheck = ref(false)
+const reportModalCheck = ref(false)
+function reportModalOpen()
 {
-    modalCheck.value = !modalCheck.value
+    reportModalCheck.value = !reportModalCheck.value
+}
+function participateModalOpen()
+{
+    participateModalCheck.value = !participateModalCheck.value
 }
 
 function participateEventAndRouting(answer)
@@ -146,7 +159,10 @@ function participateEventAndRouting(answer)
             alert("성공적으로 참여하였습니다!");
             router.push('/home')
         }
-    )
+    ).catch(e => {
+        alert("이 이벤트에 참여할 수 없습니다.")
+        participateModalOpen()
+    })
 }
 function editEvent()
 {

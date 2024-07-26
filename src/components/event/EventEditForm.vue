@@ -60,8 +60,8 @@
      import { ref, toRaw } from 'vue';
      import EventAddTag from './EventAddTag.vue';
      import UploadImageModal from '@/components/UploadImageModal.vue'
-     import { getImageSrc } from '@/upload';
-     import { getEvent, editEvent, closeEvent } from '@/event';
+     import { getImageSrc } from '@/js/upload';
+     import { getEvent, editEvent, closeEvent } from '@/js/event';
      import { useRoute, useRouter } from 'vue-router';
      const eventId = useRoute().query.id
      const tagList = ref([])

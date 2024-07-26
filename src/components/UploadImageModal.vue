@@ -21,7 +21,7 @@
 
 <script setup>
 
-import {uploadImage} from '@/upload'
+import {uploadImage} from '@/js/upload'
 import {ref} from 'vue'
 
 const emit = defineEmits(['modal-check', 'set-image'])

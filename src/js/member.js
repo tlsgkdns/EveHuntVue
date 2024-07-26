@@ -7,17 +7,6 @@ const loginConfig = {
         Authorization: `Bearer ${localStorage.getItem("Authorization")}`
     }
 }
-async function registerMember (email, name, password, profileImageName){
-    console.log(profileImageName)
-    return axios.post(url + "/signUp",
-        {
-            "email": email,
-            "name": name,
-            "password": password,
-            "profileImageName": profileImageName
-        }
-    )
-}
 async function login(email, password) {
     let response = await axios.post(url + "/signIn", 
         {
@@ -75,4 +64,27 @@ function memberLogout()
 {
     localStorage.removeItem("Authorization")
 }
-export {registerMember, login, getLoginMember, getMember, getParticipatedEvents, editPassword, editProfile, memberLogout, isLogin}
+async function registerMember (email, name, password, profileImageName){
+    console.log(profileImageName)
+    return axios.post(url + "/signUp",
+        {
+            "email": email,
+            "name": name,
+            "password": password,
+            "profileImageName": profileImageName
+        }
+    )
+}
+async function registerAdmin(email, name, password, profileImageName) {
+    const response = await axios.post(url + "/admin",
+        {
+            "email": email,
+            "name": name,
+            "password": password,
+            "profileImageName": profileImageName
+        }
+    )
+    return response.data
+}
+export {registerMember, login, getLoginMember, getMember, getParticipatedEvents, editPassword, editProfile, 
+    memberLogout, isLogin, registerAdmin, loginConfig}

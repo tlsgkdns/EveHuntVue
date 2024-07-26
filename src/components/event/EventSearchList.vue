@@ -14,7 +14,7 @@
 import EventCard from '@/components/event/EventCard.vue'
 import Pagination from '@/components/Pagination.vue';
 import { useRoute } from 'vue-router'
-import { searchEvent } from '@/event';
+import { searchEvent } from '@/js/event';
 import { ref } from 'vue';
 const eventList = ref([])
 const responseDto = ref(null)

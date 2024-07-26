@@ -16,6 +16,7 @@
 
     </form>
     <div class="d-flex justify-content-end" v-if="logined">
+        <button type="button" class="btn btn-primary me-2 border" v-if="member != null && member.role.includes('ADMIN')" @click="admin">ADMIN</button>
         <button type="button" class="btn btn-primary me-2 border" @click="info">Info</button>
         <button type="button" class="btn btn-primary border" @click="logOut">Logout</button>
     </div>
@@ -49,24 +50,27 @@
 </style>
 
 <script setup>
-  import {memberLogout, isLogin, getLoginMember} from '@/member'
-  import {ref } from 'vue';
+  import {memberLogout, isLogin, getLoginMember} from '@/js/member'
+  import {ref} from 'vue';
   import { useRouter } from 'vue-router';
-  const memberId = ref(null)
+  const member = ref(null)
   const router = useRouter()
   const logined = ref(false)
   
   isLogin().then(
     (response) => {
-      console.log(response)
       logined.value = response
+      if(response) {
+        getLoginMember().then(
+          (loginedMember) => {
+          console.log(loginedMember)
+          member.value = loginedMember
+        }
+      )
+      }
     }
   )
-  getLoginMember().then(
-    (response) => {
-      memberId.value = response.memberId
-    }
-  )
+ 
   function login()
   {
     router.push('/member/login')
@@ -77,13 +81,16 @@
   }
   function info()
   {
-    router.push('/member/info?id=' + memberId.value)
+    router.push('/member/info?id=' + member.value.memberId)
   }
-
   function logOut()
   {
     memberLogout()
     alert('정상적으로 로그아웃되었습니다.')
     location.reload()
+  }
+  function admin()
+  {
+    router.push('/member/admin/manage')
   }
 </script>

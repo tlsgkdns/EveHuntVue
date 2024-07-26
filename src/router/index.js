@@ -11,7 +11,8 @@ import PasswordEdit from '@/pages/member/PasswordEdit.vue'
 import ProfileEdit from '@/pages/member/ProfileEdit.vue'
 import EventEdit from '@/pages/event/EventEdit.vue';
 import NotFound from '@/pages/NotFound.vue'
-
+import Manage from '@/pages/admin/Manage.vue';
+import AdminRegister from '@/pages/admin/AdminRegister.vue';
 const router = createRouter({
     history: createWebHistory(),
     routes: [
@@ -26,6 +27,8 @@ const router = createRouter({
         {path: '/member/edit/password', name: 'edit-member-password', component: PasswordEdit},
         {path: '/member/edit/profile', name: 'edit-member-profile', component: ProfileEdit},
         {path: '/event/edit', name: 'event-edit', component: EventEdit},
+        {path: '/member/admin/manage', name: 'admin-manage', component: Manage},
+        {path: '/member/admin/register', name: 'admin-register', component: AdminRegister},
         {path: '/:NotFound(.*)', component: NotFound}
     ]
 })

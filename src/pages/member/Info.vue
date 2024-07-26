@@ -12,7 +12,7 @@
     import MemberProfile from '@/components/member/MemberProfile.vue';
     import Top5EventCardList from '@/components/event/Top5EventCardList.vue';
     import { ref } from 'vue';
-    import { searchEvent } from '@/event';
+    import { searchEvent } from '@/js/event';
     import { useRoute } from 'vue-router';
     const participatedEventList = ref([])
     const hostEventList = ref([])
@@ -24,8 +24,9 @@
             participatedEventList.value = response.dtoList
         }
     )
-    searchEvent({"page": 1, "size": 5, "searchType": "host", "keyword": memberId, "asc": true, "sortType": "new"}).then(
+    searchEvent({"page": 1, "size": 5, "searchType": "hostId", "keyword": memberId, "asc": true, "sortType": "new"}).then(
         (response) => {
+            console.log()
             hostEventList.value = response.dtoList
         }
     )

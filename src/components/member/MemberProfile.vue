@@ -4,11 +4,14 @@
             <div class="col-lg-4">
                 <div class="card mb-3">
                     <div v-if="member" class="card-body text-center">
+                            <div v-if="member.suspended" style="color: red; font-weight: bold; font-size: 25px;">{{member.suspended.substring(0, 10)}}까지 정지된 유저입니다.</div>
                             <div class="profileImage">
                                 <img v-if="imageSrc" :src="imageSrc" alt="avatar" class="rounded-circle img-fluid" style="width: 150px; height: 150px" id="altImage"/>
                                 <img v-else src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" style="width: 150px;" alt="avatar"/>
                             </div>
                             <div class="text-muted fst-italic mb-2 my-3">Email: {{member.email}}</div>
+                            <div class="text-muted fst-italic mb-2 my-3" v-if="member.role.includes('ADMIN')">등급: 관리자</div>
+                            <div class="text-muted fst-italic mb-2 my-3" v-else>등급: 유저</div>
                             <div class="d-flex justify-content-center mb-2 my-2">
                                 <h1>{{member.name}}</h1>
                             </div>
@@ -25,9 +28,9 @@
 
 <script setup>
 import {ref} from 'vue'
-import { getMember, getLoginMember } from '@/member';
+import { getMember, getLoginMember } from '@/js/member';
 import { useRoute, useRouter } from 'vue-router';
-import { getImageSrc } from '@/upload';
+import { getImageSrc } from '@/js/upload';
 const memberId = useRoute().query.id
 const member = ref(null)
 const imageSrc = ref(null)
