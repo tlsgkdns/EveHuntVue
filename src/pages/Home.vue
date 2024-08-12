@@ -1,7 +1,7 @@
 <template>
 <Header/>
 <div class="mainScreen">
-  <p style="position: relative;top: 200px; left: 1050px; font-size: 60px">당신의 이벤트를 찾아보세요!</p>
+  <p style="position: relative; top: 50px; left: 1050px; font-size: 60px; background-color: #fff0f0; width: 800px; height: 100px;">당신의 이벤트를 찾아보세요!</p>
   <SearchEvent style= "top: 100px;left: 700px;"/>
   <PopularTagList style="top: -100px;left: 50px; width: 450px; height: 800px;"/>
   <Top5EventCardList style="top: -600px; left: 600px;" title="인기 이벤트 Top5" :eventList="eventList"/>
@@ -31,6 +31,7 @@ getPopularEvent().then(
   width: 1400px;
   height: 500px;
   position: relative;
-  left: 50px
+  left: 50px;
+  top: 180px;
 }
 </style>

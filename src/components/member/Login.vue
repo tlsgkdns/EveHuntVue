@@ -1,6 +1,6 @@
 <template>
     <div class = "align-middle">
-<div class="container-fluid d-flex justify-content-center" style="height: 100vh">
+        <div class="container-fluid d-flex justify-content-center" style="height: 100vh">
     <div class="card align-self-center">
         <div class="card-header">
             Login Page
@@ -14,18 +14,12 @@
                     <span class="input-group-text">PASSWORD</span>
                     <input type="password" name="password" class="form-control" placeholder="PASSWORD" v-model="password">
                 </div>
-                <div class="input-group mb-3">
-                    <input class="form-check-input" type="checkbox" name="remember-me">
-                    <label class="form-check-label">
-                        Auto Login
-                    </label>
-                </div>
                 <div class="my-4">
                     <div class="float-end">
                         <button type="button" class="btn btn-primary submitBtn" @click="loginAndRouting()">LOGIN</button>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-secondary" to="/member/register">Register</button>
+                <button type="submit" class="btn btn-secondary" @click="register()">Register</button>
         </div>
     </div>
 </div>
@@ -34,8 +28,8 @@
 
 <script setup>
     import { login } from '@/js/member';
-    import { useRouter } from 'vue-router';
-
+    import { useRouter, useRoute } from 'vue-router';
+    const route = useRoute()
     const email = defineModel('email')
     const password = defineModel('password')
     const router = useRouter()
@@ -44,7 +38,11 @@
     {
         login(email.value, password.value).then(
             reponse => {
-                router.push({path: '/home'})
+                router.push({path: '/home'}).then(
+                    () => {
+                        location.reload()
+                    }
+                )
             }
         ).catch(e => {
             if(e.message)
@@ -54,5 +52,10 @@
                 alert("아이디와 비밀번호가 일치하지 않습니다.")
             }
         })
+    }
+
+    function register()
+    {
+        router.push('/member/register')
     }
 </script>

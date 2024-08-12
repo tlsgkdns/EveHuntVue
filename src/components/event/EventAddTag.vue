@@ -43,6 +43,11 @@
     function addTag()
     {
         if(!tagName.value) return
+        if(tagList.value.includes(tagName.value))
+        {
+            alert("이미 추가한 태그입니다.")
+            return
+        }
         tagList.value.push(tagName.value)
         tagName.value = ""
     }

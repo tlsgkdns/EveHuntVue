@@ -5,12 +5,7 @@
           <div class="card-header mb-5"> 당첨자 선별 </div>
           <div class="container">
             <div class="row w-100" style="column-gap: 550px;">
-              <div class="col-4 mb-5">
-                <div class="input-group">
-                  <input type="text" class="form-control" id="searchKeyword">
-                  <button class="btn btn-outline-secondary searchBtn" type="button">Search</button>
-                </div>
-              </div>
+              <div class="col-4 mb-5"></div>
               <div class="col mb-5">
                 <div class="input-group">
                   <span class="input-group-text">인원 수</span>
@@ -39,7 +34,11 @@
                         <tr v-for="participant in participantList" :key="participant.id">
                           <th scope="row">{{participant.id}}</th>
                           <td>{{participant.email}}</td>
-                          <td row="3">{{participant.answer}}</td>
+                          <td row="3">
+                            <div v-for="answerLine in participant.answer.split('\n')">
+                              {{answerLine}}
+                            </div>
+                          </td>
                           <td>
                             <input type="checkbox" @change="changeCheckbox(participant.id, event.winMessage)" :value="participant.id" :checked="winners.has(participant.id)"/>
                           </td>

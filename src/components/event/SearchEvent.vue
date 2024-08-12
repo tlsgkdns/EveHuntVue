@@ -27,7 +27,7 @@ const keyword = ref(useRoute().query.keyword ? useRoute().query.keyword : "")
 const router = useRouter()
 const searchType = ref(useRoute().query.searchType ? useRoute().query.searchType : "title")
 const sortType = ref(useRoute().query.sortType ? useRoute().query.sortType : "title")
-const asc = ref(useRoute().query.asc != null && useRoute().query.asc ? true : false)
+const asc = ref(useRoute().query.asc != null && useRoute().query.asc)
 
 function searchClick()
 {

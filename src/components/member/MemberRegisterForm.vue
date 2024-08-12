@@ -8,7 +8,7 @@
                             <h1>Profile Image</h1>
                             <div class="profileImage">
                                 <img v-if="imageSrc" :src="imageSrc" alt="avatar"
-                                     class="rounded-circle img-fluid" style="width: 150px;" id="altImage"/>
+                                     class="rounded-circle img-fluid" style="width: 150px; height: 150px" id="altImage"/>
                                 <img v-else src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
                                      class="rounded-circle img-fluid" style="width: 150px;" id="altImage"/>
                             </div>
@@ -79,7 +79,6 @@
         modalCheck.value = !modalCheck.value
     }
     const router = useRouter()
-    
     function registerMemberAndRouting()
     {
         props.registerFunction(email.value, name.value, password.value, toRaw(image.value)).then(
@@ -87,7 +86,11 @@
                 login(email.value, password.value).then(
                     () => {
                         alert("회원가입이 완료되었습니다.")
-                        router.push({path: '/home'})
+                        router.push({path: '/home'}).then(
+                            () => {
+                                location.reload()
+                            }
+                        )
                     }
                 )
             }

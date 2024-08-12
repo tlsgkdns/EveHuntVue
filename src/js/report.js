@@ -5,7 +5,10 @@ const url = "http://localhost:8080/api/reports"
 async function getReports(pageRequest)
 {
     const response = await axios.get(url, {
-        params: pageRequest
+        params: pageRequest,
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("Authorization")}`
+        }
     })
     return response.data
 }
@@ -25,7 +28,7 @@ async function handleReport(reportId, accept, suspendDay)
     const response = await axios.patch(url + "/" + reportId, {
         "suspendDay": Number(suspendDay),
         "accepted": accept
-    })
+    }, loginConfig)
     return response.data
 }
 export {createReport, getReports, handleReport}

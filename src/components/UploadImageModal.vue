@@ -36,6 +36,10 @@ function clickUpload()
         response => {
             emit('set-image', response)
         }
+    ).catch(
+        e => {
+            alert("이 이미지를 업로드할 수 없습니다.")
+        }
     )
 }
 </script>

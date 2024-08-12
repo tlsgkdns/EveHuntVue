@@ -1,5 +1,5 @@
 <template>
-    <div class="album py-5" style="width: 40.7%; position: relative; top: 200px;">
+    <div class="album py-5" style="width: 1000px; position: relative; top: 200px;">
         <div class="container">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 justify-content-center">
                 <EventCard v-for="eventCard in eventList" :key="eventCard.id" :eventCard="eventCard"/>
@@ -30,6 +30,7 @@ searchEvent({"page": page, "size": size, "keyword": keyword, "sortType": sortTyp
     (response) => {
         eventList.value = response.dtoList
         responseDto.value = response
+        console.log(eventList.value)
     }   
 )
 </script>

@@ -19,7 +19,7 @@
                         <button type="button" class="btn btn-primary uploadFileBtn" style="height: 50px;" @click="imageModalOpen">ADD Files</button>
                     </div>
                 </div>
-                <figure class="mb-4"><img class="img-fluid rounded" v-if="imageSrc" :src="imageSrc" /></figure>
+                <figure class="mb-4"><img class="img-fluid rounded" style="width: 640px; height: 480px;" v-if="imageSrc" :src="imageSrc" /></figure>
                 <div class="input-group mb-4">
                     <span class="input-group-text">추가 질문</span>
                     <input type="text" class="form-control" id="question" placeholder="이벤트 참여자에게 질문할 것을 입력하세요" v-model="question">
@@ -34,7 +34,7 @@
                 </div>
                 <div class="input-group mb-4">
                     <span class="input-group-text">참여 가능 인원 수</span>
-                    <input type="text" class="form-control" id="capacity" placeholder="최대 100,000명 가능합니다." v-model = "capacity">
+                    <input type="text" class="form-control" id="capacity" placeholder="최대 1,000명 가능합니다." v-model = "capacity">
                 </div>
                 <div class="input-group mb-4">
                     <span class="input-group-text">태그</span>
@@ -115,6 +115,11 @@
     }
     function hostEventAndRouting()
     {
+        if(isNaN(capacity.value))
+        {
+            alert("참여 가능 인원수에 숫자를 입력해주세요.")
+            return
+        }
         const tagAddRequests = tagList.value.map((str) => {
             return {"tagName": str}
         })

@@ -1,26 +1,26 @@
 <template>
 <div class="col card" style="width: 18rem; height: 24rem;" v-if="eventCard != null">
-    <img class="card-img-top" v-if="imageSrc" :src="imageSrc" style="width: 270px; height: 180px;">
+    <img class="card-img-top" v-if="imageSrc" :src="imageSrc" style="width: 100%; height: 190px;">
     <img class="card-img-top" v-else src="https://placehold.co/600x400" alt="https://placehold.co/600x400">
   <div class="card-body">
     <h5 class="card-title" style="font-weight: bold;">{{eventCard.title}}</h5>
     <div class="card-text">
         <i>개최자: {{eventCard.hostName}}<br> </i>
-        <i>종료예정일: {{getDateString(eventCard.closedAt)}}</i>
-    </div> 
-    <div class="bottomContainer">
-        <div>
+        <i>종료예정일: {{getDateString(eventCard.closeAt)}}</i>
+    </div>
+  </div>
+  <div class="bottomContainer">
+        <div style="position: relative; top: 10px; left: 10px">
             {{eventCard.capacity}} / {{eventCard.participantCount}}
         </div>
-        <div > 
+        <div style="position: relative; top: 5px; left: -10px;"> 
             <a class="btn btn-primary" @click="routeToDetail">확인</a>
         </div>
-    </div>
   </div>
 </div>
 </template>
 <script setup>
-    import { ref } from 'vue';
+    import { ref} from 'vue';
     import { getImageSrc } from '@/js/upload';
     import { useRouter } from 'vue-router';
     const imageSrc = ref(null)
@@ -32,7 +32,6 @@
                 id: 0,
                 eventImage: ""
             }
-
         }
     })
     const router = useRouter()
@@ -50,7 +49,6 @@
             imageSrc.value = response
         }
     )
-
 </script>
 <style>
 p {
@@ -60,7 +58,7 @@ p {
 .bottomContainer {
     display: flex;
     position: relative;
-    top: 50px;
+    top: -20px;
     justify-content: space-between;
 }
 </style>

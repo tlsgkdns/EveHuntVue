@@ -63,7 +63,6 @@
       if(response) {
         getLoginMember().then(
           (loginedMember) => {
-          console.log(loginedMember)
           member.value = loginedMember
         }
       )

@@ -3,29 +3,36 @@
         <div class="row w-100">
             <div class="col-lg-7">
                 <article>
-                     <!-- Post header-->
                      <header class="mb-4">
-                        <!-- Post title-->
                          <h1 class="fw-bolder mb-1">{{event.title}}</h1>
-                         <div class="text-muted fst-italic mb-2">개최자: {{hostName}}</div>
-                        <!-- Post meta content-->
                         <div class="text-muted fst-italic mb-2">개최 개시일: {{getDateString(event.createdAt)}}</div>
-                        <!-- Post categories-->
-                        <a class="badge bg-secondary text-decoration-none link-light" v-for="tag in event.eventTags.slice(0)" href="#!">
+                        <a class="badge bg-secondary text-decoration-none link-light" v-for="tag in event.eventTags.slice(0)" :href="'/event/list?keyword=' + tag.tagName + '&searchType=tag'">
                             {{tag.tagName}}
                         </a>
                     </header>
-                    <!-- Preview image figure-->
                     <figure class="mb-4">
-                        <img class="img-fluid rounded" v-if="imageSrc" :src="imageSrc" />
+                        <img class="img-fluid rounded" v-if="imageSrc" :src="imageSrc" style="width: 640px; height: 480px;"/>
                     </figure>
-                    <!-- Post content-->
                     <section class="mb-5">
-                        {{event.description}}
+                        <div v-for="desc in event.description?.split('\n')">
+                            {{desc}} <br>
+                        </div>
                     </section>
                 </article>
             </div>
             <div class="col-lg-4">
+                <div class="card mb-3">
+                        <div class="card-header">
+                            개최자 정보
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="profileImage mb-4">
+                                <img v-if="profileImageSrc" :src="profileImageSrc" alt="avatar" class="rounded-circle img-fluid" style="width: 150px; height: 150px" id="altImage"/>
+                                <img v-else src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" style="width: 150px;" alt="avatar"/>
+                            </div>
+                            <div class="text-muted">개최자: <a :href="'/member/info?id=' + host.memberId">{{host.name}}</a></div>
+                        </div>
+                </div>
                 <div class="card mb-4">
                     <div class="card-header">이벤트 참여 인원</div>
                         <div class="card-body">
@@ -34,7 +41,8 @@
                                 <h3>현재 참여 인원: {{event.participantCount}} </h3>
                             </div>
                         </div>
-                    </div>
+                </div>
+                    
                     <div class="card mb-4">
                         <div class="card-header">태그</div>
                         <div class="card-body">
@@ -94,10 +102,12 @@ import { getImageSrc } from '@/js/upload';
 import ReportModal from '../report/ReportModal.vue';
 import EventParticipateModal from './EventParticipateModal.vue';
 const eventId = useRoute().query.id;
-const hostName = ref("")
+const host = ref("")
 const imageSrc = ref(null)
 const router = useRouter()
 const loginId = ref(null)
+const profileImageSrc = ref(null)
+
 function getDateString(date)
 {
     return date.substring(0, 10) + " " + date.substring(11, 20)
@@ -122,7 +132,15 @@ getEvent(eventId).then(
         console.log(response)
         getMember(response.hostId).then(
             (member) => {
-                hostName.value = member.name
+                host.value = member
+                if(member.profileImageName != null)
+                {
+                    getImageSrc(member.profileImageName).then(
+                        (image) => {
+                            profileImageSrc.value = image
+                        }
+                    )
+                }
             }
         )
         if(response.eventImage != null)

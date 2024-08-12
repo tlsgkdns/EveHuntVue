@@ -18,7 +18,6 @@ const tagList = ref([])
 const router = useRouter()
 getPopularTagList().then(
     (response) => {
-        console.log(response)
         tagList.value = response
     }
 )

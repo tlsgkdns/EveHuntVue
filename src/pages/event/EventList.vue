@@ -1,6 +1,6 @@
 <template>
     <Header />
-    <SearchEvent style="top: 50px; left: 200px;"/>
+    <SearchEvent style="top: 130px; left: 150px;"/>
     <div class="eventListScreen">
       <div class="eventsInfos">
         <PopularTagList style="top: 250px; left: 100px; width: 450px; height: 800px;"/>

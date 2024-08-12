@@ -72,6 +72,7 @@
   import { getReports } from '@/js/report';
   import { ref } from 'vue';
   import { useRoute , useRouter} from 'vue-router';
+  import { isLogin, getLoginMember } from '@/js/member';
   import Pagination from '@/components/Pagination.vue';
   import ReportHandleModal from './ReportHandleModal.vue';
 
@@ -85,6 +86,27 @@
   const searchType = ref((useRoute().query.searchType) ? useRoute().query.searchType : "")
   const asc = ref((useRoute().query.searchType) ? useRoute().query.asc : true)
 
+  isLogin().then(
+    (logined) => {
+      if(!logined) 
+      {
+        alert("권한이 없습니다.")
+        router.push('/home')
+      }
+      else
+      {
+        getLoginMember().then(
+          (member) => {
+            if(!member.role.includes("ADMIN"))
+            {
+                alert("권한이 없습니다.")
+                router.push('/home')
+            }
+          }
+        )
+      }
+    }
+  )
   getReports({"page": page, "size": size, "sortType": sortType.value, "asc": asc.value, "keyword": keyword.value, "searchType": searchType.value}).then(
     (response) => {
       reportList.value = response.dtoList
